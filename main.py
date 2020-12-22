@@ -29,15 +29,13 @@ i2c = busio.I2C(board.SCL, board.SDA)
 def wind_meas(add):
     ads = ADS.ADS1015(add)
     chan = AnalogIn(ads, ADS.P0)
-    return (19.636*chan.voltage-6.8727)
+    return (19.636*chan.voltage-6.8727) #needs calibration
 
 def bme280_meas(add):
-    #i2c = busio.I2C(board.SCL, board.SDA)
     bme280 = adafruit_bme280.Adafruit_BME280_I2C(add)
     return bme280.temperature, bme280.humidity, bme280.pressure
 
 def main_measurement():
-    # pass
     conn = mariadb.connect(
         user="user_name",
         password="password",
@@ -47,8 +45,6 @@ def main_measurement():
     cur.execute('CREATE TABLE IF NOT EXISTS meteoDB (n INT(22) NOT NULL AUTO_INCREMENT, Hora TIMESTAMP, Temp FLOAT, Hum FLOAT, Press FLOAT, Wind FLOAT, PRIMARY KEY (n))')
     
     temperature, humidity, pressure = bme280_meas(i2c)
-    # humidity = bme280.humidity
-    # pressure = bme280.pressure
     wind = wind_meas(i2c)
     
     try:
