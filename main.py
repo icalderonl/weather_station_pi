@@ -48,8 +48,8 @@ def main_measurement():
     wind = wind_meas(i2c)
     
     try:
-        cur.execute("INSERT INTO meteoDB (Temp, Hum, Press, Wind) VALUES (%s,%s,%s,%s)",(temperature, humidity,pressure/980.665,wind))
-        print(time.strftime('%m-%d-%H:%M') + " {0:0.1f}*C,{1:0.1f}%,{2:0.1f}atm,{3:0.1f}[m/s]".format(temperature, humidity,pressure/980.665,wind))
+        cur.execute("INSERT INTO meteoDB (Temp, Hum, Press, Wind) VALUES (%s,%s,%s,%s)",(temperature, humidity,pressure/1013.2501,wind))
+        print(time.strftime('%m-%d-%H:%M') + " {0:0.1f}*C,{1:0.1f}%,{2:0.1f}atm,{3:0.1f}[m/s]".format(temperature, humidity,pressure/1013.2501,wind))
     except mariadb.Error as e:
         print("Error: " + e)
     conn.commit()
